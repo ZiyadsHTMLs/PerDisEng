@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psychiatric Personality Disorders</title>
+  <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    direction: ltr;
+    background: #0f1115;
+    color: #f1f1f1;
+    padding: 1rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 0;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .search-bar input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1d24;
+    color: #f1f1f1;
+    font-size: 15px;
+    direction: ltr;
+    font-family: Arial, sans-serif;
+  }
+
+  .search-bar input::placeholder {
+    color: #888;
+  }
+
+  .cluster-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .tab {
+    padding: 5px 14px;
+    border-radius: 999px;
+    border: 1px solid #333;
+    background: #1a1d24;
+    color: #bbb;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+
+  .tab.active {
+    border: 2px solid;
+  }
+
+  .tab.A.active {
+    background: #10263d;
+    color: #7ec3ff;
+    border-color: #2d7ed6;
+  }
+
+  .tab.B.active {
+    background: #221d44;
+    color: #b5a8ff;
+    border-color: #6f61e8;
+  }
+
+  .tab.C.active {
+    background: #1d2a16;
+    color: #a9df7a;
+    border-color: #5f9b2f;
+  }
+
+  .tab.all.active {
+    background: #2a2d35;
+    color: #fff;
+    border-color: #666;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: #181b22;
+    border: 1px solid #2a2e38;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .card:hover {
+    border-color: #666;
+    transform: translateY(-2px);
+  }
+
+  .card.expanded {
+    border-width: 1.5px;
+  }
+
+  .card.A.expanded { border-color: #2d7ed6; }
+  .card.B.expanded { border-color: #6f61e8; }
+  .card.C.expanded { border-color: #5f9b2f; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .badge.A {
+    background: #10263d;
+    color: #7ec3ff;
+  }
+
+  .badge.B {
+    background: #221d44;
+    color: #b5a8ff;
+  }
+
+  .badge.C {
+    background: #1d2a16;
+    color: #a9df7a;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    flex: 1;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    color: #9aa3af;
+    margin-top: 3px;
+  }
+
+  .arrow {
+    font-size: 13px;
+    color: #777;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .arrow.open {
+    transform: rotate(180deg);
+  }
+
+  .card-body {
+    margin-top: 12px;
+    border-top: 1px solid #2a2e38;
+    padding-top: 12px;
+    display: none;
+  }
+
+  .card-body.show {
+    display: block;
+  }
+
+  .section-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+    margin-top: 10px;
+  }
+
+  .section-label:first-child {
+    margin-top: 0;
+  }
+
+  .section-text {
+    font-size: 14px;
+    color: #ddd;
+    line-height: 1.7;
+  }
+
+  .example-box {
+    background: #11141a;
+    border: 1px solid #2a2e38;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.7;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .keyword-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  .kw {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #20242d;
+    color: #ccc;
+    border: 1px solid #333;
+  }
+
+  .no-results {
+    text-align: center;
+    color: #888;
+    padding: 2rem;
+    font-size: 14px;
+  }
+
+  .footer-credit {
+    text-align: center;
+    margin-top: 2rem;
+    color: #777;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Psychiatric Personality Disorders</h1>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for a disorder..." oninput="render()" />
+  </div>
+  <div class="cluster-tabs">
+    <div class="tab all active" data-filter="all" onclick="setFilter('all',this)">All</div>
+    <div class="tab A" data-filter="A" onclick="setFilter('A',this)">Cluster A — Odd / Withdrawn</div>
+    <div class="tab B" data-filter="B" onclick="setFilter('B',this)">Cluster B — Dramatic / Erratic</div>
+    <div class="tab C" data-filter="C" onclick="setFilter('C',this)">Cluster C — Anxious / Fearful</div>
+  </div>
+  <div class="cards-grid" id="cardsContainer"></div>
+</div>
+<div class="footer-credit">
+  Humble project by Ziyad - R1
+</div>
+
+<script>
+const data = [
+  {
+    cluster: "A",
+    name: "Paranoid Personality Disorder",
+    en: "Paranoid",
+    keyword: ["Constant suspicion", "Distrust", "Misinterpretation"],
+    core: "Pervasive and unjustified distrust and suspicion of others. The person believes others intend to harm, exploit, or deceive them.",
+    example: "A husband accuses his wife of infidelity with no evidence. At work, he assumes colleagues are conspiring against him whenever they speak privately.",
+    mcq: "A patient refuses any close relationship and says: 'Everyone just wants to use me' — Paranoid PD"
+  },
+  {
+    cluster: "A",
+    name: "Schizoid Personality Disorder",
+    en: "Schizoid",
+    keyword: ["Voluntary isolation", "No desire for relationships", "Emotionally cold"],
+    core: "Complete social withdrawal with no desire for friendships or romantic relationships. Appears cold and detached but does not feel distressed about it.",
+    example: "An employee who has lived alone for years, declines all social invitations, feels no loneliness, and is entirely self-sufficient.",
+    mcq: "A young man with no friends, unbothered by it, says: 'I always prefer to be alone' — Schizoid PD"
+  },
+  {
+    cluster: "A",
+    name: "Schizotypal Personality Disorder",
+    en: "Schizotypal",
+    keyword: ["Magical thinking", "Odd behavior", "Social anxiety"],
+    core: "Eccentric thoughts and behaviors, magical thinking, belief in the supernatural, social anxiety combined with a desire to withdraw.",
+    example: "A person who believes they can read others' minds, speaks in a vague and peculiar way, and dresses unusually.",
+    mcq: "A patient says: 'I feel like the TV is speaking directly to me' with odd behavior — Schizotypal PD"
+  },
+  {
+    cluster: "B",
+    name: "Narcissistic Personality Disorder",
+    en: "Narcissistic",
+    keyword: ["Grandiosity", "Lack of empathy", "Needs admiration"],
+    core: "Exaggerated sense of self-importance and uniqueness, exploits others, lacks empathy, and requires constant admiration.",
+    example: "A doctor who believes he is always the best, looks down on colleagues, gets angry when not praised, and expects special treatment.",
+    mcq: "A manager says: 'I'm the only one who can solve this problem' and never listens to his team — Narcissistic PD"
+  },
+  {
+    cluster: "B",
+    name: "Borderline Personality Disorder",
+    en: "Borderline",
+    keyword: ["Unstable relationships", "Fear of abandonment", "Self-harm"],
+    core: "Unstable relationships that swing between idealization and devaluation, intense fear of abandonment, mood instability, impulsivity, and possible self-harm.",
+    example: "A girl tells her friend 'You're the most important person in my life,' then two days later after a minor argument: 'I hate you and wish you were never in my life.'",
+    mcq: "A patient repeatedly cuts off relationships and returns to them, with cuts on her arms — Borderline PD"
+  },
+  {
+    cluster: "B",
+    name: "Histrionic Personality Disorder",
+    en: "Histrionic",
+    keyword: ["Attention-seeking", "Dramatic emotions", "Shallow affect"],
+    core: "Constantly seeks to be the center of attention, displays exaggerated and theatrical emotions, is emotionally shallow and seductive.",
+    example: "A woman who cries intensely in trivial situations, always dresses to stand out, and says 'No one cares about me' the moment she is not the focus of conversation.",
+    mcq: "A patient faints in the clinic at the first difficult question — Histrionic PD"
+  },
+  {
+    cluster: "B",
+    name: "Antisocial Personality Disorder",
+    en: "Antisocial",
+    keyword: ["No conscience", "No remorse", "Violates others' rights"],
+    core: "Repeatedly disregards the rights of others, lies and cheats without guilt, is aggressive, and does not learn from punishment.",
+    example: "A person who scams people out of their money, then laughs about it with no guilt. Has a repeated criminal record.",
+    mcq: "A patient says: 'Weak people deserve to be deceived' and feels no remorse — Antisocial PD"
+  },
+  {
+    cluster: "C",
+    name: "Obsessive-Compulsive PD (OCPD)",
+    en: "Obsessive-Compulsive",
+    keyword: ["Perfectionism", "Rigidity", "Excessive control"],
+    core: "Preoccupation with orderliness, perfectionism, and control at the expense of flexibility, efficiency, and social relationships.",
+    example: "A manager who rewrites a report 10 times because it's 'not perfect,' cannot delegate any task, and wastes time on minor details.",
+    mcq: "An employee is always late submitting work because of his pursuit of perfection — OCPD (not OCD)"
+  },
+  {
+    cluster: "C",
+    name: "Dependent Personality Disorder",
+    en: "Dependent",
+    keyword: ["Relies on others", "Can't decide alone", "Fear of independence"],
+    core: "Excessive need to be taken care of by others, difficulty making simple decisions without input, and intense fear of being alone.",
+    example: "A forty-year-old man who cannot choose his own clothes without his wife's opinion, and stays in a painful relationship out of fear of being alone.",
+    mcq: "A patient says: 'I cannot make any decision without my husband's permission' — Dependent PD"
+  },
+  {
+    cluster: "C",
+    name: "Avoidant Personality Disorder",
+    en: "Avoidant",
+    keyword: ["Fear of criticism", "Avoids socializing", "Wants relationships but is afraid"],
+    core: "Avoids social situations out of fear of rejection and criticism. Desires relationships but is too afraid to pursue them — the opposite of Schizoid.",
+    example: "An employee who refuses a promotion for fear of failing in front of others, and wants friends but never initiates contact out of fear of rejection.",
+    mcq: "A student skips class to avoid giving a wrong answer in front of peers — Avoidant PD"
+  }
+];
+
+let currentFilter = "all";
+let expanded = {};
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function toggle(i) {
+  expanded[i] = !expanded[i];
+  render();
+}
+
+function render() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const container = document.getElementById('cardsContainer');
+  const filtered = data.map((d,i) => ({...d, idx:i})).filter(d => {
+    const matchCluster = currentFilter === 'all' || d.cluster === currentFilter;
+    const matchQ = !q || d.name.toLowerCase().includes(q) || d.en.toLowerCase().includes(q) || d.keyword.some(k => k.toLowerCase().includes(q)) || d.core.toLowerCase().includes(q);
+    return matchCluster && matchQ;
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="no-results">No results found.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(d => {
+    const isOpen = expanded[d.idx];
+    return `<div class="card ${d.cluster} ${isOpen ? 'expanded' : ''}" onclick="toggle(${d.idx})">
+      <div class="card-header">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge ${d.cluster}">Cluster ${d.cluster}</span>
+            <span class="card-title">${d.name}</span>
+          </div>
+          <div class="card-subtitle">${d.en}</div>
+        </div>
+        <div class="arrow ${isOpen ? 'open' : ''}">▼</div>
+      </div>
+      <div class="card-body ${isOpen ? 'show' : ''}">
+        <div class="section-label">Keywords</div>
+        <div class="keyword-row">${d.keyword.map(k=>`<span class="kw">${k}</span>`).join('')}</div>
+        <div class="section-label">Core Description</div>
+        <div class="section-text">${d.core}</div>
+        <div class="section-label">Real-life Example</div>
+        <div class="example-box">${d.example}</div>
+        <div class="section-label">Exam Example (MCQ)</div>
+        <div class="example-box" style="font-style:normal">${d.mcq}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
